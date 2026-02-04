@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class='bx bx-menu'></i>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-filter="all">
+                <i class='bx bx-list-ul'></i>
+                <span>Semua Tugas</span>
+            </a>
+            <a href="#" class="nav-item" data-filter="today">
+                <i class='bx bx-sun'></i>
+                <span>Hari Ini</span>
+            </a>
+            <a href="#" class="nav-item" data-filter="important">
+                <i class='bx bx-bookmark'></i>
+                <span>Penting</span>
+            </a>
+            <a href="#" class="nav-item" data-filter="planned">
+                <i class='bx bx-calendar-event'></i>
+                <span>Terjadwal</span>
+            </a>
+            <a href="#" class="nav-item" data-filter="tasks">
+                <i class='bx bx-home-alt'></i>
+                <span>Tugas</span>
+                <span class="badge" id="tasks-count"></span>
+            </a>
+
+            <div class="nav-divider"></div>
+
+            <a href="#" class="nav-item new-list">
+                <i class='bx bx-plus'></i>
+                <span>Daftar Baru</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="header-row">
+                <h1 id="page-title">TO DO LIST</h1>
+                <div class="sort-controls">
+                    <button class="sort-btn active" data-sort="added" title="Sort by Added Date"><i
+                            class='bx bx-time'></i></button>
+                    <button class="sort-btn" data-sort="date" title="Sort by Due Date"><i
+                            class='bx bx-calendar'></i></button>
+                    <button class="sort-btn" data-sort="priority" title="Sort by Priority"><i
+                            class='bx bx-star'></i></button>
+                    <button class="sort-btn" data-sort="alphabetical" title="Sort Alphabetically"><i
+                            class='bx bx-sort-a-z'></i></button>
+                </div>
+            </div>
+            <p class="subtitle" id="current-date"></p>
+
+            <form id="todo-form">
+                <div class="input-group">
+                    <input type="text" id="todo-input" placeholder="Add a task" required autocomplete="off">
+                    <input type="date" id="date-input" placeholder="Due Date" class="date-picker">
+                </div>
+                <!-- Hidden button for enter key submission -->
+                <button type="submit" style="display: none;">Add</button>
+            </form>
+
+            <ul id="todolist">
+                <!-- Items will be injected here -->
+            </ul>
+        </div>
+    </main>
+
+    <!-- Edit Task Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-text">Task Name</label>
+                    <input type="text" id="edit-text" placeholder="Task name">
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="edit-date">Due Date</label>
+                        <input type="text" id="edit-date" placeholder="Select date">
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <div class="priority-selector">
+                            <button class="priority-btn" data-value="none" title="None"><i class='bx bx-x'></i></button>
+                            <button class="priority-btn" data-value="low" title="Low"><i
+                                    class='bx bx-chevrons-down'></i></button>
+                            <button class="priority-btn" data-value="medium" title="Medium"><i
+                                    class='bx bx-menu'></i></button> <!-- Using menu icon as equals/medium, or minus -->
+                            <button class="priority-btn" data-value="high" title="High"><i
+                                    class='bx bx-chevrons-up'></i></button>
+                        </div>
+                        <input type="hidden" id="edit-priority">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-notes">Notes</label>
+                    <textarea id="edit-notes" rows="4" placeholder="Add some notes..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel close-modal">Cancel</button>
+                <button class="btn-save" id="save-edit-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
