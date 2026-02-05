@@ -15,6 +15,10 @@
 </head>
 
 <body>
+    <video autoplay muted loop id="bg-video">
+        <source src="image/bgtodo.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
 
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -56,25 +60,27 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">
-            <div class="header-row">
-                <h1 id="page-title">TO DO LIST</h1>
-                <div class="sort-controls">
-                    <button class="sort-btn active" data-sort="added" title="Sort by Added Date"><i
-                            class='bx bx-time'></i></button>
-                    <button class="sort-btn" data-sort="date" title="Sort by Due Date"><i
-                            class='bx bx-calendar'></i></button>
-                    <button class="sort-btn" data-sort="priority" title="Sort by Priority"><i
-                            class='bx bx-star'></i></button>
-                    <button class="sort-btn" data-sort="alphabetical" title="Sort Alphabetically"><i
-                            class='bx bx-sort-a-z'></i></button>
+            <div class="glass-header">
+                <div class="header-row">
+                    <h1 id="page-title">TO DO LIST</h1>
+                    <div class="sort-controls">
+                        <button class="sort-btn active" data-sort="added" title="Sort by Added Date"><i
+                                class='bx bx-time'></i></button>
+                        <button class="sort-btn" data-sort="date" title="Sort by Due Date"><i
+                                class='bx bx-calendar'></i></button>
+                        <button class="sort-btn" data-sort="priority" title="Sort by Priority"><i
+                                class='bx bx-star'></i></button>
+                        <button class="sort-btn" data-sort="alphabetical" title="Sort Alphabetically"><i
+                                class='bx bx-sort-a-z'></i></button>
+                    </div>
                 </div>
+                <p class="subtitle" id="current-date"></p>
             </div>
-            <p class="subtitle" id="current-date"></p>
 
             <form id="todo-form">
                 <div class="input-group">
                     <input type="text" id="todo-input" placeholder="Add a task" required autocomplete="off">
-                    <input type="date" id="date-input" placeholder="Due Date" class="date-picker">
+                    <input type="date" id="date-input" placeholder="Tanggal" class="date-picker">
                 </div>
                 <!-- Hidden button for enter key submission -->
                 <button type="submit" style="display: none;">Add</button>

@@ -456,28 +456,60 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
+    // --- Drop on Release System ---
+    // Item only moves when you release the mouse, no flickering during drag
+    let dropTargetElement = null;
+
     list.addEventListener('dragover', (e) => {
         e.preventDefault();
-        const afterElement = getDragAfterElement(list, e.clientY);
-        const draggable = document.querySelector('.dragging');
-        if (afterElement == null) {
-            list.appendChild(draggable);
-        } else {
-            list.insertBefore(draggable, afterElement);
-        }
+        // Just track where we would drop, don't move anything yet
+        dropTargetElement = getDragAfterElement(list, e.clientX, e.clientY);
     });
 
-    function getDragAfterElement(container, y) {
+    list.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggable = document.querySelector('.dragging');
+        if (!draggable) return;
+
+        // Now actually move the element
+        if (dropTargetElement == null) {
+            list.appendChild(draggable);
+        } else {
+            list.insertBefore(draggable, dropTargetElement);
+        }
+        dropTargetElement = null;
+    });
+
+    function getDragAfterElement(container, x, y) {
         const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
-        return draggableElements.reduce((closest, child) => {
+        if (draggableElements.length === 0) return null;
+
+        let closestElement = null;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        for (const child of draggableElements) {
             const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
+            const centerX = box.left + box.width / 2;
+            const centerY = box.top + box.height / 2;
+            const distance = Math.hypot(x - centerX, y - centerY);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestElement = child;
             }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        if (!closestElement) return null;
+
+        const box = closestElement.getBoundingClientRect();
+        const centerX = box.left + box.width / 2;
+
+        // Insert before or after based on horizontal position
+        if (x > centerX) {
+            return closestElement.nextElementSibling;
+        } else {
+            return closestElement;
+        }
     }
 
     init();
