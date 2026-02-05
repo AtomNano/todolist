@@ -12,6 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentDateEl = document.getElementById('current-date');
     const tasksCountBadge = document.getElementById('tasks-count');
 
+    // Weather API Configuration
+    const WEATHER_API_KEY = '1b6887b3dc7c4c88a6794956260502';
+    const WEATHER_API_URL = 'https://api.weatherapi.com/v1/forecast.json';
+    const DEFAULT_CITY = 'Batam'; // Default location
+
+    // Weather Dashboard Elements
+    const weatherDateEl = document.getElementById('weather-date');
+    const citySearchInput = document.getElementById('city-search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const weatherLoading = document.querySelector('.weather-loading');
+    const weatherContent = document.querySelector('.weather-content');
+    const weatherError = document.querySelector('.weather-error');
+
+
+
     // Sort Elements
     const sortBtns = document.querySelectorAll('.sort-btn');
 
@@ -512,5 +527,146 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Weather Dashboard Functions ---
+
+    function formatWeatherDate() {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        return new Date().toLocaleDateString('en-US', options);
+    }
+
+    async function fetchWeatherForecast(location) {
+        try {
+            const response = await fetch(
+                `${WEATHER_API_URL}?key=${WEATHER_API_KEY}&q=${location}&days=6&aqi=no`
+            );
+
+            if (!response.ok) {
+                throw new Error('Weather data not available');
+            }
+
+            const data = await response.json();
+            displayWeatherData(data);
+        } catch (error) {
+            console.error('Error fetching weather:', error);
+            showWeatherError('Unable to load weather data. Please try another city.');
+        }
+    }
+
+    function displayWeatherData(data) {
+        // Hide loading, show content
+        weatherLoading.style.display = 'none';
+        weatherContent.style.display = 'block';
+        weatherError.style.display = 'none';
+
+        // Display current weather
+        displayCurrentWeather(data);
+
+        // Display 5-day forecast
+        displayForecast(data.forecast.forecastday);
+    }
+
+    function displayCurrentWeather(data) {
+        const current = data.current;
+        const location = data.location;
+
+        // Update search city name (large display)
+        const cityNameEl = document.querySelector('.search-city-name');
+        cityNameEl.textContent = location.name.toLowerCase();
+
+        // Update location
+        const locationText = document.querySelector('.location-text');
+        locationText.textContent = `${location.name}, ${location.country}`;
+
+        // Update temperature
+        const tempElement = document.querySelector('.weather-temp');
+        tempElement.textContent = `${Math.round(current.temp_c)}°C`;
+
+        // Update condition
+        const conditionEl = document.querySelector('.weather-condition');
+        conditionEl.textContent = current.condition.text;
+
+        // Update icon
+        const iconElement = document.querySelector('.weather-icon');
+        iconElement.src = `https:${current.condition.icon}`;
+        iconElement.alt = current.condition.text;
+
+        // Update humidity
+        const humidityValue = document.querySelector('.humidity-value');
+        humidityValue.textContent = `${current.humidity}%`;
+
+        // Update wind (convert to m/s)
+        const windValue = document.querySelector('.wind-value');
+        const windMs = (current.wind_kph / 3.6).toFixed(2);
+        windValue.textContent = `${windMs} m/s`;
+    }
+
+    function displayForecast(forecastDays) {
+        const forecastContainer = document.querySelector('.forecast-container');
+        forecastContainer.innerHTML = '';
+
+        // Skip today (index 0), show next 5 days
+        const daysToShow = forecastDays.slice(1, 6);
+
+        daysToShow.forEach(day => {
+            const date = new Date(day.date);
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+
+            const card = document.createElement('div');
+            card.className = 'forecast-card';
+            card.innerHTML = `
+                <div class="forecast-day">${dayName}</div>
+                <div class="forecast-temp">${Math.round(day.day.avgtemp_c)}°C</div>
+                <img class="forecast-icon" src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
+                <div class="forecast-condition">${day.day.condition.text}</div>
+            `;
+
+            forecastContainer.appendChild(card);
+        });
+    }
+
+    function showWeatherError(message) {
+        weatherLoading.style.display = 'none';
+        weatherContent.style.display = 'none';
+        weatherError.style.display = 'flex';
+
+        const errorText = document.querySelector('.error-text');
+        errorText.textContent = message;
+    }
+
+    function searchWeather() {
+        const city = citySearchInput.value.trim();
+        if (city) {
+            weatherLoading.style.display = 'flex';
+            weatherContent.style.display = 'none';
+            weatherError.style.display = 'none';
+            fetchWeatherForecast(city);
+        }
+    }
+
+    function initWeather() {
+        // Set weather date
+        if (weatherDateEl) {
+            weatherDateEl.textContent = formatWeatherDate();
+        }
+
+        // Load default city (Batam)
+        fetchWeatherForecast(DEFAULT_CITY);
+
+        // Search button event
+        if (searchBtn) {
+            searchBtn.addEventListener('click', searchWeather);
+        }
+
+        // Enter key on search input
+        if (citySearchInput) {
+            citySearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchWeather();
+                }
+            });
+        }
+    }
+
     init();
+    initWeather();
 });

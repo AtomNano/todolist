@@ -57,38 +57,99 @@
         </nav>
     </aside>
 
+
     <!-- Main Content -->
     <main class="main-content">
-        <div class="container">
-            <div class="glass-header">
-                <div class="header-row">
-                    <h1 id="page-title">TO DO LIST LUTHFI</h1>
-                    <div class="sort-controls">
-                        <button class="sort-btn active" data-sort="added" title="Sort by Added Date"><i
-                                class='bx bx-time'></i></button>
-                        <button class="sort-btn" data-sort="date" title="Sort by Due Date"><i
-                                class='bx bx-calendar'></i></button>
-                        <button class="sort-btn" data-sort="priority" title="Sort by Priority"><i
-                                class='bx bx-star'></i></button>
-                        <button class="sort-btn" data-sort="alphabetical" title="Sort Alphabetically"><i
-                                class='bx bx-sort-a-z'></i></button>
+        <div class="dashboard-container">
+            <!-- Left Column: Todo List -->
+            <div class="todo-section">
+                <div class="container">
+                    <div class="glass-header">
+                        <div class="header-row">
+                            <h1 id="page-title">TO DO LIST LUTHFI</h1>
+                            <div class="sort-controls">
+                                <button class="sort-btn active" data-sort="added" title="Sort by Added Date"><i
+                                        class='bx bx-time'></i></button>
+                                <button class="sort-btn" data-sort="date" title="Sort by Due Date"><i
+                                        class='bx bx-calendar'></i></button>
+                                <button class="sort-btn" data-sort="priority" title="Sort by Priority"><i
+                                        class='bx bx-star'></i></button>
+                                <button class="sort-btn" data-sort="alphabetical" title="Sort Alphabetically"><i
+                                        class='bx bx-sort-a-z'></i></button>
+                            </div>
+                        </div>
+                        <p class="subtitle" id="current-date"></p>
                     </div>
+
+                    <form id="todo-form">
+                        <div class="input-group">
+                            <input type="text" id="todo-input" placeholder="Add a task" required autocomplete="off">
+                            <input type="date" id="date-input" placeholder="Tanggal" class="date-picker">
+                        </div>
+                        <!-- Hidden button for enter key submission -->
+                        <button type="submit" style="display: none;">Add</button>
+                    </form>
+
+                    <ul id="todolist">
+                        <!-- Items will be injected here -->
+                    </ul>
                 </div>
-                <p class="subtitle" id="current-date"></p>
             </div>
 
-            <form id="todo-form">
-                <div class="input-group">
-                    <input type="text" id="todo-input" placeholder="Add a task" required autocomplete="off">
-                    <input type="date" id="date-input" placeholder="Tanggal" class="date-picker">
-                </div>
-                <!-- Hidden button for enter key submission -->
-                <button type="submit" style="display: none;">Add</button>
-            </form>
+            <!-- Right Column: Weather Dashboard -->
+            <div class="weather-section">
+                <div class="weather-dashboard">
+                    <div class="weather-header">
+                        <h2 class="weather-title">Weather App</h2>
+                        <p class="weather-date" id="weather-date"></p>
+                        <div class="weather-search">
+                            <input type="text" id="city-search-input" placeholder="Search city...">
+                            <button id="search-btn"><i class='bx bx-search'></i></button>
+                        </div>
+                    </div>
 
-            <ul id="todolist">
-                <!-- Items will be injected here -->
-            </ul>
+                    <div class="weather-loading">
+                        <i class='bx bx-loader-alt bx-spin'></i>
+                        <span>Loading weather...</span>
+                    </div>
+
+                    <div class="weather-content" style="display: none;">
+                        <div class="current-weather">
+                            <div class="search-city-name"></div>
+                            <div class="weather-location">
+                                <i class='bx bx-map-pin'></i>
+                                <span class="location-text"></span>
+                            </div>
+                            <div class="weather-main">
+                                <img class="weather-icon" src="" alt="">
+                                <div class="weather-temp"></div>
+                            </div>
+                            <div class="weather-condition"></div>
+                            <div class="weather-details">
+                                <div class="detail-item">
+                                    <i class='bx bx-droplet'></i>
+                                    <span>Humidity</span>
+                                    <strong class="humidity-value"></strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class='bx bx-wind'></i>
+                                    <span>Wind Speed</span>
+                                    <strong class="wind-value"></strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="forecast-container">
+                            <!-- Forecast cards will be injected here -->
+                        </div>
+                    </div>
+
+                    <div class="weather-error" style="display: none;">
+                        <i class='bx bx-error-circle'></i>
+                        <span class="error-text"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
