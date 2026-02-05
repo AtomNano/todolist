@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- CRUD ---
+    // --- CRUD ToDo ---
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const text = input.value.trim();
