@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Weather API Configuration
     const WEATHER_API_KEY = '1b6887b3dc7c4c88a6794956260502';
     const WEATHER_API_URL = 'https://api.weatherapi.com/v1/forecast.json';
-    const DEFAULT_CITY = 'Batam'; // Default location
+    const DEFAULT_CITY = 'jakarta'; // Default location
 
     // Weather Dashboard Elements
     const weatherDateEl = document.getElementById('weather-date');
